@@ -9,9 +9,9 @@ func stringToBase36(data []byte) string {
 	return base36
 }
 
-func base36ToString(data string) ([]byte, error) {
+func base36ToString(data string) (string, error) {
 	bigint := big.NewInt(0)
 	bigint.SetString(data, 36)
 	decodedBytes := bigint.Bytes()
-	return decodedBytes, nil
+	return string(decodedBytes), nil
 }

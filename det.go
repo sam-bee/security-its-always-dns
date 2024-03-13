@@ -1,0 +1,4 @@
+package det
+
+func main() {
+}

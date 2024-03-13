@@ -58,7 +58,7 @@ func convertDecodablePacketsToFullPayload(packets []decodablePacket) (string, er
 			if err != nil {
 				return "", err
 			}
-			result += string(decoded)
+			result += decoded
 		}
 	}
 	return result, nil

