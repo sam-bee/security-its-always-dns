@@ -1,1 +1,7 @@
 .vscode/
+bin/**
+!bin/.gitkeep
+cmd/dnsexfiltool/config.ini
+data/**
+!data/.gitkeep
+cmd/dnsreceiver/.env
