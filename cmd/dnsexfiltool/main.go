@@ -23,6 +23,6 @@ func parseConfig() {
 
 	// Access the values from the ini file
 	section := cfg.Section("det")
-	value := section.Key("DET_SETTING").String()
+	value := section.Key("SETTING").String()
 	fmt.Println(value)
 }

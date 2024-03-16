@@ -1,54 +1,44 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"github.com/joho/godotenv"
 	_ "github.com/joho/godotenv/autoload"
-	"github.com/miekg/dns"
-	"log"
-	"net"
+	"github.com/sam-bee/security-itsalwaysdns/pkg/dnsserver"
 	"os"
 )
 
+var configFile string
 var ipAddressToReturn string
-
-type handler struct{}
+var dnsPortNumber string
 
 func main() {
-	loadConfig()
-	runNameserver()
+	readFlags()
+	loadConfig(&configFile)
+	dnsserver.RunNameserver(ipAddressToReturn, dnsPortNumber)
 }
 
-func loadConfig() {
-	godotenv.Load(".env")
+func readFlags() {
+	configFile = ""
+	flag.StringVar(&configFile, "config", "./.env", "path to the config file")
+	flag.Parse()
+}
+
+func loadConfig(file *string) {
+	if _, err := os.Stat(configFile); os.IsNotExist(err) {
+		panic(fmt.Sprintf("Config file does not exist: %s", configFile))
+	}
+
+	godotenv.Load(*file)
 	ipAddressToReturn = os.Getenv("ITSALWAYSDNS_IP_ADDRESS")
-}
+	dnsPortNumber = os.Getenv("ITSALWAYSDNS_DNS_PORT_NUMBER")
 
-func runNameserver() {
-	srv := &dns.Server{Addr: ":53", Net: "udp"}
-	srv.Handler = &handler{}
-	if err := srv.ListenAndServe(); err != nil {
-		log.Fatalf("Failed to set udp listener %s\n", err.Error())
+	if ipAddressToReturn == "" {
+		panic("IP address to return cannot be empty")
 	}
-}
 
-func (h *handler) ServeDNS(w dns.ResponseWriter, r *dns.Msg) {
-	msg := dns.Msg{}
-	msg.SetReply(r)
-	switch r.Question[0].Qtype {
-	case dns.TypeA:
-		msg.Authoritative = true
-		domain := msg.Question[0].Name
-		doSomethingWithTheFqdn(domain)
-
-		msg.Answer = append(msg.Answer, &dns.A{
-			Hdr: dns.RR_Header{Name: domain, Rrtype: dns.TypeA, Class: dns.ClassINET, Ttl: 60},
-			A:   net.ParseIP(ipAddressToReturn),
-		})
+	if dnsPortNumber == "" {
+		panic("DNS port number cannot be empty")
 	}
-	w.WriteMsg(&msg)
-}
-
-func doSomethingWithTheFqdn(fqdn string) {
-	fmt.Printf("Received query for %s\n", fqdn)
 }

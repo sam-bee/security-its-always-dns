@@ -2,25 +2,21 @@ package dnsserver
 
 import (
 	"fmt"
-	"github.com/joho/godotenv"
 	_ "github.com/joho/godotenv/autoload"
 	"github.com/miekg/dns"
 	"log"
 	"net"
-	"os"
 )
 
-var ipAddressToReturn string
+var ipAddress string
+var dnsPort string
 
 type handler struct{}
 
-func loadConfig() {
-	godotenv.Load(".env")
-	ipAddressToReturn = os.Getenv("ITSALWAYSDNS_IP_ADDRESS")
-}
-
-func main() {
-	srv := &dns.Server{Addr: ":53", Net: "udp"}
+func RunNameserver(ipAddressToReturn string, dnsPortNumber string) {
+	ipAddress = ipAddressToReturn
+	dnsPort = dnsPortNumber
+	srv := &dns.Server{Addr: ":" + dnsPort, Net: "udp"}
 	srv.Handler = &handler{}
 	if err := srv.ListenAndServe(); err != nil {
 		log.Fatalf("Failed to set udp listener %s\n", err.Error())
@@ -38,7 +34,7 @@ func (h *handler) ServeDNS(w dns.ResponseWriter, r *dns.Msg) {
 
 		msg.Answer = append(msg.Answer, &dns.A{
 			Hdr: dns.RR_Header{Name: domain, Rrtype: dns.TypeA, Class: dns.ClassINET, Ttl: 60},
-			A:   net.ParseIP(ipAddressToReturn),
+			A:   net.ParseIP(ipAddress),
 		})
 	}
 	w.WriteMsg(&msg)
