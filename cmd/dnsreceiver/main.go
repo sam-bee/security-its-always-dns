@@ -6,17 +6,20 @@ import (
 	"github.com/joho/godotenv"
 	_ "github.com/joho/godotenv/autoload"
 	"github.com/sam-bee/security-itsalwaysdns/pkg/dnsserver"
+	"github.com/sam-bee/security-itsalwaysdns/pkg/persistence"
 	"os"
 )
 
 var configFile string
 var ipAddressToReturn string
 var dnsPortNumber string
+var sqlitePath string
 
 func main() {
 	readFlags()
 	loadConfig(&configFile)
-	dnsserver.RunNameserver(ipAddressToReturn, dnsPortNumber)
+	db := persistence.GetDb(sqlitePath)
+	dnsserver.RunNameserver(ipAddressToReturn, dnsPortNumber, db)
 }
 
 func readFlags() {
@@ -31,14 +34,15 @@ func loadConfig(file *string) {
 	}
 
 	godotenv.Load(*file)
-	ipAddressToReturn = os.Getenv("ITSALWAYSDNS_IP_ADDRESS")
-	dnsPortNumber = os.Getenv("ITSALWAYSDNS_DNS_PORT_NUMBER")
+	ipAddressToReturn = getSetting("ITSALWAYSDNS_IP_ADDRESS")
+	dnsPortNumber = getSetting("ITSALWAYSDNS_DNS_PORT_NUMBER")
+	sqlitePath = getSetting("ITSALWAYSDNS_SQLITE_PATH")
+}
 
-	if ipAddressToReturn == "" {
-		panic("IP address to return cannot be empty")
+func getSetting(setting string) string {
+	value := os.Getenv(setting)
+	if value == "" {
+		panic(fmt.Sprintf("%s cannot be empty. Please set in the .env file or an environment variable.", setting))
 	}
-
-	if dnsPortNumber == "" {
-		panic("DNS port number cannot be empty")
-	}
+	return value
 }
