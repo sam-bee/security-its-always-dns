@@ -3,6 +3,6 @@ bin/**
 !bin/.gitkeep
 data/**
 !data/.gitkeep
-cmd/dnsexfiltool/config.ini
+cmd/dnsexfiltool/config.toml
 cmd/dnsreceiver/.env
 bin/.env

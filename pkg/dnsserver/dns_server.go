@@ -2,11 +2,19 @@ package dnsserver
 
 import (
 	"fmt"
+<<<<<<< HEAD
 	_ "github.com/joho/godotenv/autoload"
 	"github.com/miekg/dns"
 	"github.com/sam-bee/security-itsalwaysdns/pkg/persistence"
+=======
+>>>>>>> c58113c (To allow received DNS lookups to be persisted, add Sqlite integration)
 	"log"
 	"net"
+	"strings"
+
+	_ "github.com/joho/godotenv/autoload"
+	"github.com/miekg/dns"
+	"github.com/sam-bee/security-itsalwaysdns/pkg/persistence"
 )
 
 var ipAddress string
@@ -37,7 +45,8 @@ func (h *handler) ServeDNS(w dns.ResponseWriter, r *dns.Msg) {
 	case dns.TypeA:
 		msg.Authoritative = true
 		domain := msg.Question[0].Name
-		persist(domain)
+		domainToPersist := strings.TrimRight(domain, ".")
+		persist(domainToPersist)
 
 		msg.Answer = append(msg.Answer, &dns.A{
 			Hdr: dns.RR_Header{Name: domain, Rrtype: dns.TypeA, Class: dns.ClassINET, Ttl: 60},
