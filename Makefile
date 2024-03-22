@@ -2,7 +2,7 @@
 
 build-dnsexfiltool:
 	echo "Building DNS exfil tool..."
-	if [ ! -f "./cmd/dnsexfiltool/config.ini" ]; then exit 1; fi
+	if [ ! -f "./cmd/dnsexfiltool/config.toml" ]; then exit 1; fi
 	go build -o bin/det cmd/dnsexfiltool/main.go
 	echo "Built to ./bin/det"
 

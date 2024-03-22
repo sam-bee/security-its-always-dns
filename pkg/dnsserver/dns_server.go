@@ -2,19 +2,12 @@ package dnsserver
 
 import (
 	"fmt"
-<<<<<<< HEAD
 	_ "github.com/joho/godotenv/autoload"
 	"github.com/miekg/dns"
 	"github.com/sam-bee/security-itsalwaysdns/pkg/persistence"
-=======
->>>>>>> c58113c (To allow received DNS lookups to be persisted, add Sqlite integration)
 	"log"
 	"net"
 	"strings"
-
-	_ "github.com/joho/godotenv/autoload"
-	"github.com/miekg/dns"
-	"github.com/sam-bee/security-itsalwaysdns/pkg/persistence"
 )
 
 var ipAddress string
