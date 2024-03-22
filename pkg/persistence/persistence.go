@@ -28,7 +28,7 @@ func open(file string) (*sql.DB, error) {
 func (db *Database) Initialise() error {
 	_, err := db.dbHandle.Exec(
 		"CREATE TABLE IF NOT EXISTS `dns_lookups_received` " +
-		" (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `fqdn` TEXT, `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP)",
+			" (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `fqdn` TEXT, `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP)",
 	)
 	return err
 }

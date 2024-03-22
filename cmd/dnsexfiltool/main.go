@@ -2,8 +2,8 @@ package main
 
 import (
 	_ "embed"
-	"github.com/sam-bee/security-itsalwaysdns/pkg/dnsexfiltool"
 	"github.com/pelletier/go-toml"
+	"github.com/sam-bee/security-itsalwaysdns/pkg/dnsexfiltool"
 )
 
 //go:embed config.toml
@@ -30,7 +30,7 @@ func main() {
 	parseConfig()
 
 	if config.Missions.PhoneHome {
-		dnsexfiltool.PhoneHome(config .ExfilServer.MainDomain)
+		dnsexfiltool.PhoneHome(config.ExfilServer.MainDomain)
 	}
 
 	// @todo doesn't do anything else yet

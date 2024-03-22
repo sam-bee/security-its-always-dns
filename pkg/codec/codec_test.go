@@ -46,7 +46,7 @@ func TestEncodingAndDecoding(t *testing.T) {
 
 	for _, tc := range tests {
 
-		exfilPacketDomains := EncodeDataToExfilPackets(tc.data, "example.com")
+		exfilPacketDomains := encodeDataToExfilPackets(tc.data, "example.com")
 
 		fqdns := []string{}
 
@@ -72,7 +72,7 @@ func TestEncoding(t *testing.T) {
 	expectedEndOfDomain := "-0.1t.example.com"
 	expectedPatternForStartOfDomain := regexp.MustCompile(`^[0-9a-f]{6}`)
 
-	result := EncodeDataToExfilPackets(input, "example.com")
+	result := encodeDataToExfilPackets(input, "example.com")
 
 	if len(result) != 1 {
 		t.Errorf("Expected 1; got %d", len(result))

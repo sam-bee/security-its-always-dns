@@ -26,7 +26,7 @@ const packetPayloadChunkSize = 40
 
 func GetDomainsToLookUp(payload string, mainDomain string) []string {
 	exfilPackets := encodeDataToExfilPackets(payload, mainDomain)
-	domains := make([]string, len(exfilPackets))
+	var domains []string
 	for _, ep := range exfilPackets {
 		domains = append(domains, ep.ToFqdn())
 	}
