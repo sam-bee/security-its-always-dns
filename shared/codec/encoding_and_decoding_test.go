@@ -6,6 +6,43 @@ import (
 	"testing"
 )
 
+func TestEncoding(t *testing.T) {
+
+	input := "A"
+	expectedEndOfDomain := "-0.1t.example.com"
+	expectedPatternForStartOfDomain := regexp.MustCompile(`^[0-9a-f]{1,6}`)
+
+	result := GetDomainsToLookUp(input, "example.com")
+
+	if len(result) != 1 {
+		t.Errorf("Expected 1; got %d", len(result))
+	}
+
+	if !strings.HasSuffix(result[0], expectedEndOfDomain) {
+		t.Errorf("Expected string ending in %s; got %s", expectedEndOfDomain, result[0])
+	}
+
+	if !expectedPatternForStartOfDomain.MatchString(result[0]) {
+		t.Errorf("Expected string starting with up to 6 hex characters; got %s", result[0])
+	}
+}
+
+func TestDecoding(t *testing.T) {
+
+	input := []string{"abc123-0.1t.example.com"}
+	expected := "A"
+
+	result, err := DecodeDataFromFqdns(input, "example.com")
+
+	if err != nil {
+		t.Errorf("Expected no error; got %s", err)
+	}
+
+	if result != expected {
+		t.Errorf("Expected %s; got %s", expected, result)
+	}
+}
+
 func TestEncodingAndDecoding(t *testing.T) {
 
 	type test struct {
@@ -46,15 +83,9 @@ func TestEncodingAndDecoding(t *testing.T) {
 
 	for _, tc := range tests {
 
-		exfilPacketDomains := encodeDataToExfilPackets(tc.data, "example.com")
+		exfilPacketDomains := GetDomainsToLookUp(tc.data, "example.com")
 
-		fqdns := []string{}
-
-		for _, ep := range exfilPacketDomains {
-			fqdns = append(fqdns, ep.ToFqdn())
-		}
-
-		decodedData, err := DecodeDataFromFqdns(fqdns, "example.com")
+		decodedData, err := DecodeDataFromFqdns(exfilPacketDomains, "example.com")
 
 		if err != nil {
 			t.Errorf("Failing feature: %s; Expected no error; got %s", tc.reason, err)
@@ -63,44 +94,5 @@ func TestEncodingAndDecoding(t *testing.T) {
 		if decodedData != tc.data {
 			t.Errorf("Failing feature: %s; Expected %s; got %s", tc.reason, tc.data, decodedData)
 		}
-	}
-}
-
-func TestEncoding(t *testing.T) {
-
-	input := "A"
-	expectedEndOfDomain := "-0.1t.example.com"
-	expectedPatternForStartOfDomain := regexp.MustCompile(`^[0-9a-f]{6}`)
-
-	result := encodeDataToExfilPackets(input, "example.com")
-
-	if len(result) != 1 {
-		t.Errorf("Expected 1; got %d", len(result))
-	}
-
-	resultString := result[0].ToFqdn()
-
-	if !strings.HasSuffix(resultString, expectedEndOfDomain) {
-		t.Errorf("Expected string ending in %s; got %s", expectedEndOfDomain, resultString)
-	}
-
-	if !expectedPatternForStartOfDomain.MatchString(resultString) {
-		t.Errorf("Expected string starting with 6 hex characters; got %s", resultString)
-	}
-}
-
-func TestDecoding(t *testing.T) {
-
-	input := []string{"abc123-0.1t.example.com"}
-	expected := "A"
-
-	result, err := DecodeDataFromFqdns(input, "example.com")
-
-	if err != nil {
-		t.Errorf("Expected no error; got %s", err)
-	}
-
-	if result != expected {
-		t.Errorf("Expected %s; got %s", expected, result)
 	}
 }

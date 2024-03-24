@@ -1,15 +1,16 @@
-module github.com/sam-bee/security-itsalwaysdns
+module github.com/sam-bee/security-itsalwaysdns/dns_receiver
 
 go 1.22
 
 require (
-	github.com/go-ini/ini v1.67.0 // indirect
-	github.com/joho/godotenv v1.5.1 // indirect
-	github.com/mattn/go-sqlite3 v1.14.22 // indirect
-	github.com/miekg/dns v1.1.58 // indirect
-	github.com/pelletier/go-toml v1.9.5 // indirect
-	golang.org/x/mod v0.14.0 // indirect
-	golang.org/x/net v0.20.0 // indirect
-	golang.org/x/sys v0.16.0 // indirect
-	golang.org/x/tools v0.17.0 // indirect
+	github.com/sam-bee/security-itsalwaysdns/dns_exfil_tool v1.0.0
+	github.com/sam-bee/security-itsalwaysdns/integration_tests v1.0.0
+	github.com/sam-bee/security-itsalwaysdns/shared v1.0.0
+)
+
+replace (
+	github.com/sam-bee/security-itsalwaysdns/dns_exfil_tool v1.0.0 => ../dns_exfil_tool
+	github.com/sam-bee/security-itsalwaysdns/dns_receiver v1.0.0 => ../dns_receiver
+	github.com/sam-bee/security-itsalwaysdns/integration_tests v1.0.0 => ../integration_tests
+	github.com/sam-bee/security-itsalwaysdns/shared v1.0.0 => ../shared
 )

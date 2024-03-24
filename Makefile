@@ -1,19 +1,41 @@
-.PHONY: build-dnsexfiltool build-dnsreceiver build test
+.PHONY: build test
 
-build-dnsexfiltool:
-	echo "Building DNS exfil tool..."
-	if [ ! -f "./cmd/dnsexfiltool/config.toml" ]; then exit 1; fi
-	go build -o bin/det cmd/dnsexfiltool/main.go
-	echo "Built to ./bin/det"
+build: --build-dnsexfiltool --build-dnsreceiver
 
-build-dnsreceiver:
+test: --test-shared --test-dnsexfiltool --test-dnsreceiver
+
+--build-dnsexfiltool:
+	if [ ! -f "./dns_exfil_tool/config/config.toml" ]; then exit 1; fi
 	echo "Building DNS receiver..."
-	go build -o bin/dnsreceiver cmd/dnsreceiver/main.go
-	echo "Built to ./bin/dnsreceiver"
+	cd dns_exfil_tool; \
+	go build -o ./bin/det ./main.go; \
+	echo "Built to ./dns_exfil_tool/bin/det"; \
+	echo "\n\n";
 
-build: build-dnsexfiltool build-dnsreceiver
+--build-dnsreceiver:
+	echo "Building DNS receiver..."
+	cd dns_receiver; \
+	go build -o ./bin/dnsreceiver ./main.go; \
+	echo "Built to ./dns_receiver/bin/dnsreceiver"; \
+	echo "\n\n";
 
-test:
-	go fmt ./...
-	go build ./...
-	go test -v ./...
+--test-shared:
+	cd ./shared; \
+	go fmt ./...; \
+	go build ./...; \
+	go test -v ./...; \
+	echo "\n\n";
+
+--test-dnsexfiltool:
+	cd ./dns_exfil_tool; \
+	go fmt ./...; \
+	go build ./...; \
+	go test -v ./...; \
+	echo "\n\n";
+
+--test-dnsreceiver:
+	cd ./dns_receiver; \
+	go fmt ./...; \
+	go build ./...; \
+	go test -v ./...; \
+	echo "\n\n";

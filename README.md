@@ -23,11 +23,11 @@ COMPROMISED                                   ATTACKER'S
                                                    v
                                                 .----.
                                                (      )
-                                               |^----^|
+                                               |'----'|
                                                |      |
                                                |  DB  |
                                                (      )
-                                                ^----^
+                                                '----'
 ```
 
 This project consists of two parts:
@@ -60,10 +60,10 @@ Your binaries will end up in `./bin/`.
 
 ## Configuration
 
-The DNS Receiver is dependent on a `.env` file like the one in `./cmd/dnsreceiver/.env.example`. You may override
+The DNS Receiver is dependent on a `.env` file like the one in `./dns_receiver/config/.env.example`. You may override
 these settings with environment variables on the server, which take precedence.
 
-For the DNS Exfil Tool, however, you will need to set the `./cmd/dnsexfiltool/config.ini` file, which will be
+For the DNS Exfil Tool, however, you will need to set the `./dns_exfil_tool/config/config.toml` file, which will be
 included in the binary at compile time. You do not need the ability to copy your config file onto the target
 machine. You do not need the ability to set environment variables on the target machine. You only need to get the
 binary itself onto the target machine, and cause it to execute. For this convenience, the trade-off is that
@@ -77,16 +77,16 @@ exfiltrated data will be received.
 After building as per the `README.md` file in the project root, you can test the nameserver by doing the following:
 
 ```
-sudo ./bin/dnsreceiver --config "./cmd/dnsreceiver/.env"
+sudo ./dns_receiver/bin/dnsreceiver --config "./dns_receiver/config/.env"
 ```
 
-Your binary must be run with sudo as it needs to listen on port 53. In another tab,
+Your binary must be run with sudo if you set the DNS port number to 53 (or anything below 1000). In another tab,
 
 ```
-dig @127.0.0.1 example.com
+dig @127.0.0.1 -p 9953 example.com
 ```
 
-You should see the correct IP address returned to you. 
+Ensure you are sending to the port number you configured. You should see the correct IP address returned to you. 
 
 ## Development
 
@@ -94,4 +94,9 @@ You can run the tests with this command:
 
 ```
 make test
+```
+
+Build everything with:
+```
+make build
 ```

