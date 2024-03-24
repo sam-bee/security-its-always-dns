@@ -23,11 +23,11 @@ COMPROMISED                                   ATTACKER'S
                                                    v
                                                 .----.
                                                (      )
-                                               |^----^|
+                                               |'----'|
                                                |      |
                                                |  DB  |
                                                (      )
-                                                ^----^
+                                                '----'
 ```
 
 This project consists of two parts:

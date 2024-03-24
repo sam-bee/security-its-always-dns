@@ -1,4 +1,4 @@
-package dnsexfiltool
+package messagesending
 
 import (
 	"net"

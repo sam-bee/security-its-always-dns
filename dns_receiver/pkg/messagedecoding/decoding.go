@@ -1,7 +1,8 @@
-package codec
+package messagedecoding
 
 import (
 	"fmt"
+	"github.com/sam-bee/security-itsalwaysdns/shared/codec"
 	"strconv"
 	"strings"
 )
@@ -54,7 +55,7 @@ func convertDecodablePacketsToFullPayload(packets []decodablePacket) (string, er
 	result := ""
 	for _, packet := range packets {
 		for _, part := range packet.payload {
-			decoded, err := base36ToString(part)
+			decoded, err := codec.Base36ToString(part)
 			if err != nil {
 				return "", err
 			}

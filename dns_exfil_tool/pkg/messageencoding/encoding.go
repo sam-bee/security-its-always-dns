@@ -1,7 +1,8 @@
-package codec
+package messageencoding
 
 import (
 	"fmt"
+	"github.com/sam-bee/security-itsalwaysdns/shared/codec"
 	"math/rand"
 	"strings"
 )
@@ -78,7 +79,7 @@ func newExfilPacketFromPayload(
 		if strlen > packetPayloadChunkSize*i {
 			start := packetPayloadChunkSize * i
 			end := min(strlen, packetPayloadChunkSize*(i+1))
-			ep.payload[i] = stringToBase36(payload[start:end])
+			ep.payload[i] = codec.StringToBase36(payload[start:end])
 		}
 	}
 

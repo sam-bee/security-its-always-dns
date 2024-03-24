@@ -4,6 +4,7 @@ import (
 	"regexp"
 	"strings"
 	"testing"
+	"github.com/sam-bee/security-itsalwaysdns/dns_exfil_tool/pkg/messageencoding"
 )
 
 func TestEncodingAndDecoding(t *testing.T) {
@@ -46,7 +47,7 @@ func TestEncodingAndDecoding(t *testing.T) {
 
 	for _, tc := range tests {
 
-		exfilPacketDomains := encodeDataToExfilPackets(tc.data, "example.com")
+		exfilPacketDomains := messageencoding.EncodeDataToExfilPackets(tc.data, "example.com")
 
 		fqdns := []string{}
 
@@ -72,7 +73,7 @@ func TestEncoding(t *testing.T) {
 	expectedEndOfDomain := "-0.1t.example.com"
 	expectedPatternForStartOfDomain := regexp.MustCompile(`^[0-9a-f]{6}`)
 
-	result := encodeDataToExfilPackets(input, "example.com")
+	result := EncodeDataToExfilPackets(input, "example.com")
 
 	if len(result) != 1 {
 		t.Errorf("Expected 1; got %d", len(result))
