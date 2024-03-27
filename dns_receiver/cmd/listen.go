@@ -7,7 +7,6 @@ import (
 	"github.com/spf13/viper"
 )
 
-// listenCmd represents the listen command
 var listenCmd = &cobra.Command{
 	Use:   "listen",
 	Short: "Listens for incoming DNS lookups with data hidden inside",

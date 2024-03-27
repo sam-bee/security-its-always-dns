@@ -8,9 +8,8 @@ import (
 	"github.com/spf13/viper"
 )
 
-var cfgFile string
+var configFileFlag string
 
-// rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:   "dnsreceiver",
 	Short: "DNS Receiver component of the itsalwaysdns project.",
@@ -27,14 +26,17 @@ func Execute() {
 
 func init() {
 	cobra.OnInitialize(initConfig)
-	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is ./.env)")
+	rootCmd.PersistentFlags().StringVar(&configFileFlag, "config", "", "config file (default is ./.env)")
 }
 
-// initConfig reads in config file and ENV variables if set.
 func initConfig() {
-	if cfgFile != "" {
-		// Use config file from the flag.
-		viper.SetConfigFile(cfgFile)
+	readConfigFile()
+	readEnvVars()
+}
+
+func readConfigFile() {
+	if configFileFlag != "" {
+		viper.SetConfigFile(configFileFlag)
 	} else {
 		pwd, err := os.Getwd()
 		cobra.CheckErr(err)
@@ -44,13 +46,11 @@ func initConfig() {
 		viper.SetConfigName(".env")
 	}
 
-	viper.AutomaticEnv() // read in environment variables that match
-
-	// If a config file is found, read it in.
 	if err := viper.ReadInConfig(); err == nil {
 		fmt.Fprintln(os.Stderr, "Using config file:", viper.ConfigFileUsed())
 	}
+}
 
-	as := viper.AllSettings()
-	fmt.Println(as)
+func readEnvVars() {
+	viper.AutomaticEnv()
 }
