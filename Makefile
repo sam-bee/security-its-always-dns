@@ -1,8 +1,13 @@
 .PHONY: build test
 
-build: --build-dnsexfiltool --build-dnsreceiver
+build: --prep-dnsexfiltool-config --build-dnsexfiltool --build-dnsreceiver
 
-test: --test-shared --test-dnsexfiltool --test-dnsreceiver
+test: --prep-dnsexfiltool-config --test-shared --test-dnsexfiltool --test-dnsreceiver
+
+--prep-dnsexfiltool-config:
+	if [ ! -f "./dns_exfil_tool/config/config.toml" ]; then \
+		cp ./dns_exfil_tool/config/config.toml.example ./dns_exfil_tool/config/config.toml; \
+	fi
 
 --build-dnsexfiltool:
 	if [ ! -f "./dns_exfil_tool/config/config.toml" ]; then exit 1; fi
