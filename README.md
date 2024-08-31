@@ -6,8 +6,8 @@
 
 ## Overview
 
-DNS exfiltration is where data is sent from a compromised machine to a nameserver controlled by the attacker. The data is
-hidden in subdomains, and sent out via DNS lookups. This may evade detection where DNS lookups are not monitored.
+DNS exfiltration is where data is sent from a compromised machine to a nameserver controlled by the attacker. The data
+is hidden in subdomains, and sent out via DNS lookups. This may evade detection where DNS lookups are not monitored.
 
 ```text
 COMPROMISED                                   ATTACKER'S 
@@ -39,10 +39,9 @@ lookups
 
 You will need a cloud server to install the DNS Receiver. Start running the nameserver. Register a domain name for your
 nameserver (such as `nameserver.com`), then register a domain name for exfiltration (such as `example.com`). You will
-need to tell the registrar that `nameserver.com` is the nameserver for `*.example.com` domains. The nameserver will
-then receive DNS lookups from any machine asking for `[hidden-data].example.com`. Your `dns_receiver` binary will
-receive these requests, and log the hidden data. The `det` binary sends them, and should be installed on the target
-machine.
+need to tell the registrar that `nameserver.com` is the nameserver for `*.example.com` domains. The nameserver will then
+receive DNS lookups from any machine asking for `[hidden-data].example.com`. Your `dns_receiver` binary will receive
+these requests, and log the hidden data. The `det` binary sends them, and should be installed on the target machine.
 
 ## Building
 
@@ -64,10 +63,10 @@ The DNS Receiver is dependent on a `.env` file like the one in `./dns_receiver/c
 these settings with environment variables on the server, which take precedence.
 
 For the DNS Exfil Tool, however, you will need to set the `./dns_exfil_tool/config/config.toml` file, which will be
-included in the binary at compile time. You do not need the ability to copy your config file onto the target
-machine. You do not need the ability to set environment variables on the target machine. You only need to get the
-binary itself onto the target machine, and cause it to execute. For this convenience, the trade-off is that
-recompiling the binary is the only way to change its configuration.
+included in the binary at compile time. You do not need the ability to copy your config file onto the target machine.
+You do not need the ability to set environment variables on the target machine. You only need to get the binary itself
+onto the target machine, and cause it to execute. For this convenience, the trade-off is that recompiling the binary is
+the only way to change its configuration.
 
 ## dns-receiver binary
 

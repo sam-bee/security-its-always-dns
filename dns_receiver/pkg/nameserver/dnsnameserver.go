@@ -11,14 +11,12 @@ import (
 )
 
 var ipAddress string
-var dnsPort string
 var database *persistence.Database
 
 type handler struct{}
 
-func RunNameserver(ipAddressToReturn string, dnsPortNumber string, db *persistence.Database) {
-	ipAddress = ipAddressToReturn
-	dnsPort = dnsPortNumber
+func RunNameserver(ip string, dnsPort string, db *persistence.Database) {
+	ipAddress = ip
 	database = db
 	err := db.Initialise()
 	if err != nil {

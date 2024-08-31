@@ -8,7 +8,7 @@ import (
 var reassembleCmd = &cobra.Command{
 	Use:   "reassemble",
 	Short: "Reassemble data from DNS lookups stored",
-	Long: `For a given exfil ID, reassemble the data from the DNS lookups stored in the SQLite database.`,
+	Long:  `For a given exfil ID, reassemble the data from the DNS lookups stored in the SQLite database.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		execute()
 	},
