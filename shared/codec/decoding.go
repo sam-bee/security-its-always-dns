@@ -7,6 +7,7 @@ import (
 )
 
 type decodablePacket struct {
+	batchId  string
 	packetNo int
 	payload  [3]string
 }
@@ -44,8 +45,10 @@ func convertFqdnToDecodablePacket(fqdn string, mainDomain string) (decodablePack
 	if err != nil {
 		return decodablePacket{}, fmt.Errorf("packetNo is not a number")
 	}
+	batchId := metadata[0]
 
 	dp.packetNo = packetNo
+	dp.batchId = batchId
 
 	return dp, nil
 }
