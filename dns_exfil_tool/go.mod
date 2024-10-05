@@ -1,6 +1,6 @@
 module github.com/sam-bee/security-itsalwaysdns/dns_exfil_tool
 
-go 1.22
+go 1.23
 
 require (
 	github.com/pelletier/go-toml v1.9.5
